@@ -2,9 +2,6 @@
 
 namespace BrowscapHelper\Source;
 
-use Monolog\Logger;
-use Symfony\Component\Console\Output\OutputInterface;
-
 /**
  * Class DirectorySource
  *
@@ -18,7 +15,7 @@ class CollectionSource implements SourceInterface
     private $collection = null;
 
     /**
-     * @param \PDO $pdo
+     * @param array $collection
      */
     public function __construct(array $collection)
     {
@@ -32,13 +29,11 @@ class CollectionSource implements SourceInterface
     }
 
     /**
-     * @param \Monolog\Logger                                   $logger
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
-     * @param int                                               $limit
+     * @param int $limit
      *
-     * @return \Generator
+     * @return string[]
      */
-    public function getUserAgents(Logger $logger, OutputInterface $output, $limit = 0)
+    public function getUserAgents($limit = 0)
     {
         $counter   = 0;
         $allAgents = [];
@@ -48,7 +43,7 @@ class CollectionSource implements SourceInterface
                 return;
             }
 
-            foreach ($source->getUserAgents($logger, $output, $limit) as $ua) {
+            foreach ($source->getUserAgents($limit) as $ua) {
                 if ($limit && $counter >= $limit) {
                     return;
                 }
@@ -69,17 +64,14 @@ class CollectionSource implements SourceInterface
     }
 
     /**
-     * @param \Monolog\Logger                                   $logger
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
-     *
-     * @return \Generator
+     * @return \UaResult\Result\Result[]
      */
-    public function getTests(Logger $logger, OutputInterface $output)
+    public function getTests()
     {
         $allTests = [];
 
         foreach ($this->collection as $source) {
-            foreach ($source->getTests($logger, $output) as $agent => $test) {
+            foreach ($source->getTests() as $agent => $test) {
                 if (empty($agent)) {
                     continue;
                 }
@@ -88,7 +80,7 @@ class CollectionSource implements SourceInterface
                     continue;
                 }
 
-                yield [$agent => $test];
+                yield $agent => $test;
                 $allTests[$agent] = 1;
             }
         }
