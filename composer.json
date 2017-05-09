@@ -3,11 +3,11 @@
   "description": "the collection source for the browscap helper to load useragents and tests",
   "require": {
     "php": "^7.0",
-    "mimmi20/browscap-helper-source": "^2.0"
+    "mimmi20/browscap-helper-source": "^2.1"
   },
   "require-dev": {
-    "squizlabs/php_codesniffer": "^2.5",
-    "friendsofphp/php-cs-fixer": "^2.1"
+    "squizlabs/php_codesniffer": "^2.9",
+    "friendsofphp/php-cs-fixer": "^2.3"
   },
   "license": "MIT",
   "authors": [
